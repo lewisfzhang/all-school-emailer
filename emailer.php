@@ -36,65 +36,69 @@
         </form>
         <?php
             if(isset($_POST['sendEmail'])){
-                $statement = $db -> prepare('SELECT * FROM master'); 
+                $statement = $db -> prepare('SELECT StudentEmail, StudFirstName FROM master'); 
                 $result = $statement->execute();
 
                 //create an array for all of the column values
                 $emailArray[] = [];
                 $firstNameArray[] = [];
 
-                $surveyURL = 'bit.ly/2bLZQK9';
+                $surveyURL = 'https://goo.gl/forms/ZZL52PwWKb8afWat2';
+                $emailSubject = 'The Startup on Campus';
 
-                /*while($row = $result->fetchArray(SQLITE3_ASSOC)){
-                    array_push($emailArray, $row['email']); //set the values in to the array
-                }*/
                 while($row = $result->fetchArray(SQLITE3_ASSOC)){
-                    array_push($firstNameArray, $row['First']); //set the values in to the array
+                    array_push($emailArray, $row['StudentEmail']); //set the values in to the array
+                    array_push($firstNameArray, $row['StudFirstName']); //set the values in to the array
                 }
 
+                //take off extra first element
+                unset($emailArray[0]);
+                unset($firstNameArray[0]);
+
                 $index = 0; //the current index the emailer is on
-                //foreach($emailArray as $email){
-                    $email = 'Kevin.Gottlieb19@bcp.org';
-                    $firstName = 'Kevin';//$firstNameArray[$index];
+                foreach($emailArray as $email){
+                    $email = $emailArray[$index]; //'Kevin.Gottlieb19@bcp.org'; //
+                    $firstName = $firstNameArray[$index]; //'Kevin'; //
 
                     //send an email
                     $emailMessage = 
                     "Hi $firstName, <br><br>
-                    We hope you enjoyed your summer and are having fun with your new Surface. <br><br>
-
-We’re Cameron, Brendan, Rikki, and Matt from The Carillon Yearbook, and we want to share what we’re all about and why you might consider joining us. <br><br>
-
-We’re a close group of over 50 Bells based in the basement of O’Donnell Hall. We occupy two classrooms worth of space in a high-tech office with a TV, a projector, surround-sound audio, microwave, fridge, $50k+ in photography equipment, dual-monitor high-performance workstations, full Adobe Creative Cloud access…the list goes on. <br><br>
-
-We work after school throughout the year to create The Carillon Yearbook. We are nationally recognized by scholastic press associations around the country and win prestigious awards on a yearly basis. <br><br>
-
-If you are interested in experiencing a business-like environment, shooting events with professional camera equipment, writing interesting and fun articles on your fellow Bells, and learning how to design commercial-standard spreads, please don’t miss the opportunity to join what we think is the best place on campus to learn, grow with and showcase these interests. Consider joining The Carillon staff! <br><br>
-
-Please put your name down <a href=$surveyURL>at this page</a> or reply to this email so we can keep you updated about our recruitment process. You’re not committing to anything by signing up, so you've got nothing to lose. <br><br>
-
-Come by Andrade theater in the library at lunch or after school on <strong>Thursday, September 1</strong> to meet the leadership staff and learn more about the Carillon Yearbook. Also, let your parents know they can stop by the basement of OD to check out our office on Back to School Night! <br><br>
-
-We’ll see you soon, <br><br>
-
-Cameron Ormiston, Brendan Lim, Rikki Mukherjee, Matt Lowe <br>
-Editors-in-Chief <br>
-The Carillon <br><br>
-
-Cameron Ormiston <br><br>
-
-Class of 2017 <br><br>
-
-(650)-996-5172";
+                    I hope you enjoyed your summer and are having a good time figuring out the Surface. <br><br>
  
-                    if(sendMail($email, "Your Future at the Carillon", $emailMessage)){ //if mail is sent successfully
-                        echo "Mail sent to $email <br>";
+I’m Kevin Gottlieb from the newest startup right here on campus: The Carillon Yearbook Software and Technology Team! <br><br>
+
+Last year was our team’s very first year as a staff on the yearbook and this year we have ambitious goals set out to both impact the Carillon’s internal operations and Bellarmine as a whole. At such an early stage, each of you that decides to join will have an enormous impact on how you want to help the Carillon and our school. <br><br>
+
+We work out of a high-tech office in the basement of O’Donnell Hall occupying two classrooms worth of space with a TV, dual-monitor high-performance workstations, a projector, surround-sound audio, a microwave, a fridge, and much more! You’ll find yourself in a professional programming environment that looks conspicuously like that of many of the hottest unicorns in the Valley. Each project gives you a chance to make your school and your yearbook better as you work alongside creative designers, photographers, and journalists. <br><br>
+
+Many of the projects we completed last year were web apps utilizing languages such as PHP, SQL, JavaScript, JQuery, and a litany of open-source, professional libraries. This year, we’re looking to branch out into mobile development, as well. <br><br>
+
+However, no need to fear if you don’t have any programming experience! Some is preferred, but hard work and initiative will allow you to gain all of the experience you need through your projects. Also, we will meet during lunch, so no need to worry about after school conflicts. <br><br>
+
+Please consider joining the Carillon Software and Technology family! <br><br>
+
+ 
+If you're interested, please put your name down <a href=$surveyURL>at this page</a> or reply to this email so we can keep you updated about our recruitment process. You’re not committing to anything by signing up, so you've got nothing to lose. <br><br>
+ 
+Come by Andrade theater in the library at lunch or after school on <strong>Thursday, September 1</strong> to meet the leadership staff and learn more about the Carillon Yearbook. <br><br>
+ 
+We will also be open during Back to School Night if you would like to check our office out. <br><br>
+ 
+See you soon, <br><br>
+ 
+Kevin Gottlieb ‘19 <br>
+Director of Technology <br>
+The Carillon";
+ 
+                    if(sendMail($email, $emailSubject, $emailMessage)){ //if mail is sent successfully
+                        echo "Mail sent to $firstName at $email <br>";
                     }
                     else{ //if send fails
                         echo "Oh no! Sending a reminder email to $email has failed! Plase contact <a href='mailto:carillon@bcp.org'>carillon@bcp.org</a> so we can fix the problem.";
                     }
                     $index++; //increment index
                 }
-            //}
+            }
         ?>
     </body>
 </html>
