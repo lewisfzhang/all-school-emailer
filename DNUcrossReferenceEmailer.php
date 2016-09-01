@@ -1,5 +1,5 @@
 <?php
-    //DO NOT EVER RUN THIS OR COPY ANY CODE FROM IT, IT CREATES AN INFINITE LOOP
+    //DO NOT EVER RUN THIS OR COPY ANY CODE FROM IT, IT MAY CREATE AN INFINITE LOOP
     error_reporting(E_ERROR | E_PARSE); //doesn't report small errors
     require('PHPMailer/PHPMailerAutoload.php'); //PHPMailer file
     $db = new SQLite3('masterStudent16-17.sqlite3'); //connect
@@ -15,8 +15,8 @@
         $mail->From = "carillon@bcp.org";
         $mail->FromName = "The Carillon";
         $mail->AddBCC('carillon@bcp.org');
-        //$mail->AddBCC('kevin.gottlieb19@bcp.org');
-        $mail->AddAddress($to);
+        $mail->AddBCC('kevin.gottlieb19@bcp.org');
+        //$mail->AddAddress($to);
         $mail->Subject = $subject;
         $mail->Body = $message;
         $mail->IsHTML(true);
@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css"> <!--W3.CSS stylesheet-->
     </head>
     <body>
-        <h1>DO NOT EVER RUN THIS OR COPY ANY CODE FROM IT, IT CREATES AN INFINITE LOOP</h1>
+        <h1>DO NOT EVER RUN THIS OR COPY ANY CODE FROM IT, IT MAY CREATE AN INFINITE LOOP</h1>
         <form class="w3-container" method="post">
             <input type="submit" name="sendEmail" value="Send Email" class="w3-btn w3-theme">
         </form>
@@ -92,13 +92,13 @@ Cameron <br>
 The Carillon
 ";
  
-                        if(sendMail($contactEmail, $emailSubject, $emailMessage)){ //if mail is sent successfully
+                        /*if(sendMail($contactEmail, $emailSubject, $emailMessage)){ //if mail is sent successfully
                             echo "Mail sent to $contactEmail <br>";
                         }
                         else{ //if send fails
                             echo "Oh no! Sending a reminder email to $email has failed! Plase contact <a href='mailto:carillon@bcp.org'>carillon@bcp.org</a> so we can fix the problem.";
-                        }
-                        //echo "Mail sent to $contactEmail <br>";
+                        }*/
+                        echo "Mail sent to $contactEmail <br>";
                     }
                     $index++; //increment index
                 }
